@@ -1,2 +1,1 @@
-FCC Mongo & Mongoose Challenges
-===============================
+CodeCamp Trials
