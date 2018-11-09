@@ -245,8 +245,8 @@ var findEditThenSave = function(personId, done) {
 
 var findAndUpdate = function(personName, done) {
   var ageToSet = 20;
-
-  done(null/*, data*/);
+  return Person.findOneAndUpdate({name:personName},{age:ageToSet},{new:true},done);
+  //done(null/*, data*/);
 };
 
 /** # CRU[D] part IV - DELETE #
@@ -260,9 +260,7 @@ var findAndUpdate = function(personName, done) {
 // As usual, use the function argument `personId` as search key.
 
 var removeById = function(personId, done) {
-  
-  done(null/*, data*/);
-    
+  Person.findByIdAndRemove(personId, done);
 };
 
 /** 11) Delete many People */
@@ -277,7 +275,7 @@ var removeById = function(personId, done) {
 
 var removeManyPeople = function(done) {
   var nameToRemove = "Mary";
-
+  return Person.remove({name:nameToRemove},function(err,data){if(err)return done(err);return done(null,data);})
   done(null/*, data*/);
 };
 
@@ -301,8 +299,12 @@ var removeManyPeople = function(done) {
 
 var queryChain = function(done) {
   var foodToSearch = "burrito";
-  
-  done(null/*, data*/);
+  var query = Person.find({favoriteFoods:foodToSearch});
+  query.sort({name : 1});
+  query.limit(2);
+  query.select('-age');
+  query.exec(done);
+  //done(null/*, data*/);
 };
 
 /** **Well Done !!**
