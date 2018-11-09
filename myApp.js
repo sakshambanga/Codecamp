@@ -103,12 +103,10 @@ var createAndSavePerson = function(done,data={name:'Saksham Banga',age:19,favori
     else done(null,person);
   });
   done(null /*, data*/);
-
 };
 var done = function(err,data)
 {
   if(err)console.log(err);
-  else console.log(data);
 }
 createAndSavePerson(done);
 /** 4) Create many People with `Model.create()` */
@@ -155,11 +153,12 @@ var findPeopleByName = function(personName, done) {
 // argument `food` as search key
 
 var findOneByFood = function(food, done) {
-
+  var ans = Person.findOne({favoriteFoods:food},done);
+  return ans;
   done(null/*, data*/);
-  
 };
 
+//console.log(findOneByFood('pizzas',done).name);
 /** 7) Use `Model.findById()` */
 
 // When saving a document, mongodb automatically add the field `_id`,
@@ -170,7 +169,7 @@ var findOneByFood = function(food, done) {
 // Use the function argument 'personId' as search key.
 
 var findPersonById = function(personId, done) {
-  
+  return Person.findById(personId,done);
   done(null/*, data*/);
   
 };
@@ -202,9 +201,32 @@ var findPersonById = function(personId, done) {
 
 var findEditThenSave = function(personId, done) {
   var foodToAdd = 'hamburger';
+//   Person.findById(personId, function (err, person) {
+//   if (err) return done(err);
+
+//   person.favoriteFoods.push(foodToAdd);
+//   person.save(function (err, updatedTank) {
+//     if (err) return done(err);
+//     console.log(updatedTank);
+//   });
+// });
+  // var person = findPersonById(personId,done);
+  // person.favoriteFoods.push(foodToAdd);
+  // person.save(done);
+  // return person;
+  // done(null/*, data*/);
   
-  done(null/*, data*/);
+ var person = Person.findById(personId,function(err,person){
+  if(err)return done(err);
+    else
+    {
+      person.favoriteFoods.push(foodToAdd);
+      person.save(done);
+    }
+  });
 };
+
+
 
 /** 9) New Update : Use `findOneAndUpdate()` */
 
